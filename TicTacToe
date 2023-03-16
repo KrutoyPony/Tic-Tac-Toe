@@ -1,0 +1,51 @@
+def draw_board(board):
+    print(board[0] + '|' + board[1] + '|' + board[2])
+    print('-+-+-')
+    print(board[3] + '|' + board[4] + '|' + board[5])
+    print('-+-+-')
+    print(board[6] + '|' + board[7] + '|' + board[8])
+
+def get_player_move(board, player):
+    while True:
+        move = input('Игрок ' + player + ', выберите число (1-9): ')
+        try:
+            move = int(move) - 1
+            if move >= 0 and move <= 8 and board[move] == ' ':
+                return move
+        except:
+            pass
+        print('Неверный ход, попробуйте еще раз.')
+
+def check_for_winner(board):
+    winning_combinations = [
+        (0, 1, 2),
+        (3, 4, 5),
+        (6, 7, 8),
+        (0, 3, 6),
+        (1, 4, 7),
+        (2, 5, 8),
+        (0, 4, 8),
+        (2, 4, 6)
+    ]
+    for combo in winning_combinations:
+        if board[combo[0]] == board[combo[1]] == board[combo[2]] != ' ':
+            return board[combo[0]]
+    return None
+
+def tic_tac_toe():
+    board = [' '] * 9
+    current_player = 'X'
+    winner = None
+    while not winner and ' ' in board:
+        draw_board(board)
+        move = get_player_move(board, current_player)
+        board[move] = current_player
+        winner = check_for_winner(board)
+        current_player = 'O' if current_player == 'X' else 'X'
+    draw_board(board)
+    if winner:
+        print('Поздравляем игрока ' + winner + ', ты победил!')
+    else:
+        print('Это была ничья!')
+
+tic_tac_toe()
